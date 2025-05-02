@@ -1,0 +1,11 @@
+/* App.css - minimal styles since we're using Tailwind CSS */
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+}
