@@ -319,6 +319,35 @@ app.get('/api/staff/:id', async (req, res) => {
   });
   
   
+  app.get('/api/staff-requests/:id', async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const result = await pool.query(`
+        SELECT 
+          smr.request_id,
+          smr.issued_location,
+          smr.request_date,
+          smr.status,
+          s.name AS staff_name
+        FROM 
+          staff_maintenance_requests smr
+        JOIN 
+          staff s ON smr.staff_id = s.staff_id
+        WHERE 
+          smr.request_id = $1
+      `, [id]);
+  
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: 'Request not found' });
+      }
+  
+      res.json(result.rows[0]);
+    } catch (err) {
+      console.error('Error in /api/staff-requests/:id:', err.stack);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
   
 
 
