@@ -1,17 +1,63 @@
 import * as React from "react";
 import { ActionButton } from "../components/ActionButton";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export const Welcome: React.FC = () => {
+  const navigate = useNavigate();
   const handleViewApartments = () => {
     // Handle view apartments click
     console.log("View apartments clicked");
+    navigate(`/apartments`);
   };
 
   const handleViewMaintenance = () => {
     // Handle view maintenance requests click
     console.log("View maintenance requests clicked");
+    navigate(`/community-requests`);
   };
 
+  // useEffect(() => {
+  //   fetch('http://localhost:3001/api/waitlist?preferred_apartment=57')
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log(data);
+  //     })
+  //     .catch(err => {
+  //       console.error('Error calling backend:', err);
+  //     });
+  // }, []);
+
+  // useEffect(() => {
+  //   fetch('http://localhost:3001/api/approved_resident?assigned_apartment=41')
+  //     .then(async (res) => {
+  //       if (!res.ok) {
+  //         const text = await res.text(); // get the HTML error message
+  //         throw new Error(`Server error: ${res.status}\n${text}`);
+  //       }
+  //       return res.json(); // safe to parse JSON
+  //     })
+  //     .then(data => {
+  //       console.log(data); // real data
+  //     })
+  //     .catch(err => {
+  //       console.error('Error calling backend:', err.message);
+  //     });
+  // }, []);
+  
+  // useEffect(()=>
+  // {
+  //   fetch('http://localhost:3001/api/current_resident?apt_number=42')
+  //   .then(res => res.json())
+  //   .then(data => console.log(data))
+  //   .catch(err => console.error('Error:', err));
+
+  // })
+
+  
+
+
+  
   return (
     <main className="bg-[rgba(239,239,239,1)] min-h-screen flex flex-col overflow-hidden items-stretch pt-16 pb-[401px] px-[78px] max-md:pb-[100px] max-md:px-5">
       <section className="max-md:max-w-full">
