@@ -55,6 +55,8 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { commonStyles } from '../styles/commonStyles';
 
 const ApartmentListPage = () => {
   const navigate = useNavigate();
@@ -65,21 +67,83 @@ const ApartmentListPage = () => {
 
   const apartments = Array.from({ length: 100 }, (_, i) => i + 1);
 
+  // Grid layout for apartments
+  const gridContainerStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
+    gap: '1rem',
+  };
+
+  // Apartment item style
+  const apartmentItemStyle = {
+    ...commonStyles.components.button.secondary,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    height: '60px',
+    width: '100%',
+    padding: '0.5rem',
+    fontWeight: 600,
+    fontSize: '1rem',
+  };
+
   return (
-    <div className="p-10 bg-gray-100 min-h-screen">
-      <h2 className="text-xl mb-4">Search Apartments</h2>
-      <div className="border border-blue-500 rounded p-5">
-        {apartments.map(num => (
-          <div
-            key={num}
-            className="cursor-pointer py-2 border-b"
-            onClick={() => handleClick(num)}
+    <motion.div 
+      style={commonStyles.layout.pageContainer}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div style={commonStyles.layout.container}>
+        <motion.div 
+          className="flex justify-between items-center mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <motion.h2 
+            style={commonStyles.fonts.heading}
           >
-            {num}
+            Search Apartments
+          </motion.h2>
+          
+          <motion.button
+            style={commonStyles.components.button.home}
+            whileHover={{ scale: 1.03, boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)" }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => navigate('/')}
+          >
+            Home
+          </motion.button>
+        </motion.div>
+        
+        <motion.div 
+          style={commonStyles.components.card.container}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          <div style={gridContainerStyle}>
+            {apartments.map(num => (
+              <motion.div
+                key={num}
+                style={apartmentItemStyle as React.CSSProperties}
+                whileHover={{ 
+                  scale: 1.05, 
+                  boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
+                  backgroundColor: "#f7fafc"
+                }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => handleClick(num)}
+              >
+                {num}
+              </motion.div>
+            ))}
           </div>
-        ))}
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

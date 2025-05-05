@@ -1,85 +1,81 @@
 import * as React from "react";
-import { ActionButton } from "../components/ActionButton";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion"
 
 export const Welcome: React.FC = () => {
   const navigate = useNavigate();
-  const handleViewApartments = () => {
-    // Handle view apartments click
-    console.log("View apartments clicked");
-    navigate(`/apartments`);
-  };
-
-  const handleViewMaintenance = () => {
-    // Handle view maintenance requests click
-    console.log("View maintenance requests clicked");
-    navigate(`/community-requests`);
-  };
-
-  // useEffect(() => {
-  //   fetch('http://localhost:3001/api/waitlist?preferred_apartment=57')
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log(data);
-  //     })
-  //     .catch(err => {
-  //       console.error('Error calling backend:', err);
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   fetch('http://localhost:3001/api/approved_resident?assigned_apartment=41')
-  //     .then(async (res) => {
-  //       if (!res.ok) {
-  //         const text = await res.text(); // get the HTML error message
-  //         throw new Error(`Server error: ${res.status}\n${text}`);
-  //       }
-  //       return res.json(); // safe to parse JSON
-  //     })
-  //     .then(data => {
-  //       console.log(data); // real data
-  //     })
-  //     .catch(err => {
-  //       console.error('Error calling backend:', err.message);
-  //     });
-  // }, []);
   
-  // useEffect(()=>
-  // {
-  //   fetch('http://localhost:3001/api/current_resident?apt_number=42')
-  //   .then(res => res.json())
-  //   .then(data => console.log(data))
-  //   .catch(err => console.error('Error:', err));
-
-  // })
+  // Button styles as objects for consistency
+  const buttonStyle = {
+    fontFamily: "sans-serif",
+    fontWeight: 700,
+    fontSize: "1.25rem",
+    color: "#1a202c"
+  };
+  
+  const welcomeStyle = {
+    fontFamily: "sans-serif",
+    fontWeight: 700,
+    fontSize: "3.75rem",
+    color: "#1a202c"
+  };
 
   
 
 
   
   return (
-    <main className="bg-[rgb(255, 6, 6)] min-h-screen flex flex-col overflow-hidden items-stretch pt-16 pb-[401px] px-[78px] max-md:pb-[100px] max-md:px-5">
-      <section className="max-md:max-w-full">
-        <div className="gap-5 flex max-md:flex-col max-md:items-stretch">
-          <div className="w-6/12 max-md:w-full max-md:ml-0">
-            <ActionButton
-              title="View Apartments"
-              onClick={handleViewApartments}
-            />
-          </div>
-          <div className="w-6/12 max-md:w-full max-md:ml-0">
-            <ActionButton
-              title="View Community Maintenance Requests"
-              onClick={handleViewMaintenance}
-            />
-          </div>
-        </div>
-      </section>
-      <h1 className="text-black text-[64px] font-light self-center mt-[182px] max-md:text-[40px] max-md:mt-10">
-        Welcome!
-      </h1>
-    </main>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-white p-4">
+      <AnimatePresence>
+        <motion.div
+          className="flex flex-col items-center w-full max-w-4xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* Top section with buttons */}
+          <motion.div 
+            className="flex flex-col md:flex-row gap-12 w-full justify-center mb-32"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <motion.button
+              className="w-full max-w-sm rounded-full bg-white py-5 px-10 text-center shadow-md hover:shadow-lg transition-shadow border border-gray-200"
+              style={buttonStyle}
+              whileHover={{ scale: 1.03, boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)" }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate("/apartments")}
+            >
+              View Apartments
+            </motion.button>
+
+            <motion.button
+              className="w-full max-w-sm rounded-full bg-white py-5 px-10 text-center shadow-md hover:shadow-lg transition-shadow border border-gray-200"
+              style={buttonStyle}
+              whileHover={{ scale: 1.03, boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)" }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => navigate("/community-requests")}
+            >
+              View Community
+              <br />
+              Maintenance Requests
+            </motion.button>
+          </motion.div>
+
+          {/* Welcome text */}
+          <motion.h1
+            className="text-6xl"
+            style={welcomeStyle}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.7 }}
+          >
+            Welcome!
+          </motion.h1>
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 };
 export default Welcome;

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { commonStyles } from '../styles/commonStyles';
 
 // Mock data for maintenance requests
 const maintenanceRequests = [
@@ -10,51 +12,102 @@ const maintenanceRequests = [
 ];
 
 const MaintenancePage: React.FC = () => {
+  // Status badge style mapping
+  const getStatusBadgeStyle = (status: string) => {
+    switch(status) {
+      case 'Completed':
+        return { ...commonStyles.components.badge.base, ...commonStyles.components.badge.success };
+      case 'In Progress':
+        return { ...commonStyles.components.badge.base, ...commonStyles.components.badge.info };
+      default:
+        return { ...commonStyles.components.badge.base, ...commonStyles.components.badge.warning };
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-blue-50 p-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-end mb-8">
-          <Link 
-            to="/" 
-            className="bg-blue-600 py-3 px-8 rounded-xl shadow-lg hover:bg-blue-700 transition-all duration-300 text-white font-semibold border-2 border-blue-700 transform hover:-translate-y-1"
-          >
-            Home
+    <motion.div 
+      style={commonStyles.layout.pageContainer}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div style={commonStyles.layout.container}>
+        <motion.div 
+          className="flex justify-end mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <Link to="/">
+            <motion.button
+              style={commonStyles.components.button.home}
+              whileHover={{ scale: 1.03, boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)" }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Home
+            </motion.button>
           </Link>
-        </div>
+        </motion.div>
         
-        <div className="bg-white rounded-xl shadow-lg p-8 border-2 border-blue-200">
-          <h2 className="text-3xl font-bold mb-6 text-blue-800">Community Maintenance Requests</h2>
+        <motion.div 
+          style={commonStyles.components.card.container}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          <motion.h2 
+            style={commonStyles.fonts.heading}
+            className="mb-6"
+          >
+            Community Maintenance Requests
+          </motion.h2>
           
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-blue-100">
+            <table style={commonStyles.components.table.container}>
+              <thead>
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-blue-800 uppercase tracking-wider">Request</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-blue-800 uppercase tracking-wider">Apartment</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-blue-800 uppercase tracking-wider">Status</th>
+                  <th style={{
+                    ...commonStyles.components.table.headerCell,
+                    ...commonStyles.components.table.header
+                  }}>Request</th>
+                  <th style={{
+                    ...commonStyles.components.table.headerCell,
+                    ...commonStyles.components.table.header
+                  }}>Apartment</th>
+                  <th style={{
+                    ...commonStyles.components.table.headerCell,
+                    ...commonStyles.components.table.header
+                  }}>Status</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-blue-100">
+              <tbody>
                 {maintenanceRequests.map((request) => (
-                  <tr key={request.id} className="hover:bg-blue-50 transition-colors duration-150">
-                    <td className="px-6 py-5 whitespace-nowrap text-md font-medium text-blue-700">{request.title}</td>
-                    <td className="px-6 py-5 whitespace-nowrap text-md text-blue-700">{request.apartment}</td>
-                    <td className="px-6 py-5 whitespace-nowrap">
-                      <span className={`px-3 py-1.5 rounded-lg text-sm font-medium
-                        ${request.status === 'Completed' ? 'bg-green-100 text-green-800 border border-green-300' : 
-                          request.status === 'In Progress' ? 'bg-blue-100 text-blue-800 border border-blue-300' : 
-                          'bg-yellow-100 text-yellow-800 border border-yellow-300'}`}>
+                  <motion.tr 
+                    key={request.id} 
+                    style={commonStyles.components.table.row}
+                    whileHover={{
+                      backgroundColor: "#f7fafc",
+                      transition: { duration: 0.2 }
+                    }}
+                  >
+                    <td style={{
+                      ...commonStyles.components.table.cell,
+                      fontWeight: 500
+                    }}>{request.title}</td>
+                    <td style={commonStyles.components.table.cell}>{request.apartment}</td>
+                    <td style={commonStyles.components.table.cell}>
+                      <span style={getStatusBadgeStyle(request.status)}>
                         {request.status}
                       </span>
                     </td>
-                  </tr>
+                  </motion.tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
